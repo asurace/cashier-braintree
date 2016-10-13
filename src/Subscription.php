@@ -33,9 +33,11 @@ class Subscription extends Model
      */
     public function user()
     {
-        $model = getenv('BRAINTREE_MODEL') ?: config('services.braintree.model');
-
-        return $this->belongsTo($model, 'user_id');
+		$model       = getenv('BRAINTREE_MODEL') ?: config('services.braintree.model');
+        $modelObject = explode('\\', $model);
+        $columnName  = strtolower(array_pop($modelObject));
+        
+        return $this->belongsTo($model, $columnName . '_id');
     }
 
     /**
